@@ -3,7 +3,7 @@ const asyncHandler = require("express-async-handler");
 const CategoryModel = require("../models/CategoryModel");
 const ApiError = require("../utils/APIError");
 
-exports.getCategory = asyncHandler(async (req, res) => {
+exports.getAllCategory = asyncHandler(async (req, res) => {
   const page = req.query.page || 1;
   const limit = req.query.limit || 2;
   const skip = (page - 1) * limit;

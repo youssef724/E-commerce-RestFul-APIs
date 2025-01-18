@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const {
-  getCategory,
+  getAllCategory,
   createCategory,
   getCategoryById,
   updateCategory,
@@ -17,7 +17,7 @@ const {
 
 router
   .route("/")
-  .get(getCategory)
+  .get(getAllCategory)
   .post(createCategoryValidator, createCategory);
 
 router

@@ -15,6 +15,9 @@ const {
   deleteCategoryValidator,
 } = require("./../Utils/validators/categoryValidator");
 
+const subCategoryRoute = require("./SubCategoryRoute");
+router.use("/:categoryId/subcategory", subCategoryRoute);
+
 router
   .route("/")
   .get(getAllCategory)

@@ -8,7 +8,7 @@ const globalErrorHandler = require("./middlewares/errorMiddleware");
 const CategoryRoute = require("./Routes/CategoryRoute");
 const SubCategoryRoute = require("./Routes/SubCategoryRoute.js");
 const BrandRoute = require("./Routes/BrandRoute.js");
-
+const ProductRoute = require("./Routes/ProductRoute.js");
 //express app
 const app = express();
 
@@ -26,6 +26,8 @@ if (process.env.NODE_ENV === "development") {
 app.use("/api/v1/category", CategoryRoute);
 app.use("/api/v1/subcategory", SubCategoryRoute);
 app.use("/api/v1/brand", BrandRoute);
+app.use("/api/v1/product", ProductRoute);
+
 
 app.all("*", (req, res, next) => {
   next(new ApiError(`Cant find this route with ${req.originalUrl}`, 400));

@@ -6,6 +6,8 @@ const {
   createProduct,
   updateProduct,
   deleteProduct,
+  uploadProductImage,
+  resizeProductImage,
 } = require("./..//Controllers/ProductControllers");
 
 const {
@@ -18,12 +20,22 @@ const {
 router
   .route("/")
   .get(getAllProducts)
-  .post(createProductValidator, createProduct);
+  .post(
+    uploadProductImage,
+    resizeProductImage,
+    createProductValidator,
+    createProduct
+  );
 
 router
   .route("/:id")
   .get(getProductValidator, getProductById)
-  .put(updateProductValidator, updateProduct)
+  .put(
+    uploadProductImage,
+    resizeProductImage,
+    updateProductValidator,
+    updateProduct
+  )
   .delete(deleteProductValidator, deleteProduct);
 
 module.exports = router;

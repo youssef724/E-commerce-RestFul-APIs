@@ -6,23 +6,25 @@ const {
   createBrand,
   updateBrand,
   deleteBrand,
+  uploadBrandImage,
+  resizeImage,
 } = require("../Controllers/BrandController");
 
 const {
   getBrandValidator,
   createBrandValidator,
   updateBrandValidator,
-  deleteBrandValidator, 
+  deleteBrandValidator,
 } = require("../Utils/validators/brandValidator");
 
 router
   .route("/")
   .get(getBrands)
-  .post(createBrandValidator, createBrand);
+  .post(uploadBrandImage, resizeImage, createBrandValidator, createBrand);
 router
   .route("/:id")
   .get(getBrandValidator, getBrandById)
-  .put(updateBrandValidator, updateBrand)
+  .put(uploadBrandImage, resizeImage, updateBrandValidator, updateBrand)
   .delete(deleteBrandValidator, deleteBrand);
 
 module.exports = router;

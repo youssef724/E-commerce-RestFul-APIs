@@ -1,57 +1,78 @@
-const slugify = require("slugify");
-const asyncHandler = require("express-async-handler");
 const ProductModel = require("../Models/ProductModel");
-const ApiError = require("../utils/APIError");
-const ApiFeatures = require("../Utils/apiFeatures");
+const asyncHandler = require("express-async-handler");
+const sharp = require("sharp");
+
 const factory = require("./handlerFactory");
+const multer = require("multer");
+const ApiError = require("../utils/APIError");
 
-exports.getAllProducts = asyncHandler(async (req, res) => {
-  const countDocuments = await ProductModel.countDocuments();    
-  const apiFeatures = new ApiFeatures(ProductModel.find(), req.query)
-    .filter()
-    .search("Product")
-    .limit()
-    .sort()
-    .paginate(countDocuments);
-  const { MongooseQuery, paginationResult } = apiFeatures;
-  const products = await MongooseQuery;
-  res.status(200).json({ results: products.length, paginationResult, data: products });
-});
+const {uploadMultipleImages} = require("../middlewares/uploadImageMiddleware");
 
-exports.getProductById = asyncHandler(async (req, res, next) => {
-  const product = await ProductModel.findById(req.params.id).populate({
-    path: "category",
-    select: "name -_id",
-  });
-  if (!product) {
-    return next(
-      new ApiError(`Product not found with id of ${req.params.id}`, 404)
+const multerStorage = multer.memoryStorage();
+
+const multerFilter = function (req, file, cb) {
+  if (file.mimetype.startsWith("image")) {
+    cb(null, true);
+  } else {
+    cb(new ApiError("Not an image! Please upload only images.", 400), false);
+  }
+};
+
+const upload = multer({ storage: multerStorage, fileFilter: multerFilter });
+
+exports.uploadProductImage = uploadMultipleImages([
+  {
+    name: "imageCover",
+    maxCount: 1,
+  },
+  {
+    name: "images",
+    maxCount: 5,
+  },
+]);
+
+exports.resizeProductImage = asyncHandler(async (req, res, next) => {
+  console.log(req.files);
+  // Image processing for imageCover
+  if (req.files.imageCover) {
+    const imageCoverFilename = `product-${Date.now()}-cover.jpeg`;
+    await sharp(req.files.imageCover[0].buffer)
+      .resize(2000, 1333)
+      .toFormat("jpeg")
+      .jpeg({ quality: 95 })
+      .toFile(`uploads/products/${imageCoverFilename}`);
+
+    req.body.imageCover = imageCoverFilename;
+  }
+
+  // Image processing for images
+  if (req.files.images) {
+    req.body.images = [];
+
+    await Promise.all(
+      req.files.images.map(async (image, index) => {
+        const imageName = `product-${Date.now()}-${index + 1}.jpeg`;
+        await sharp(image.buffer)
+          .resize(2000, 1333)
+          .toFormat("jpeg")
+          .jpeg({ quality: 95 })
+          .toFile(`uploads/products/${imageName}`);
+
+        req.body.images.push(imageName);
+      })
     );
   }
-  res.status(200).json({ data: product });
+
+  next();
+
 });
 
-exports.createProduct = asyncHandler(async (req, res) => {
-  req.body.slug = slugify(req.body.title);
-  const product = await ProductModel.create(req.body);
-  res.status(201).json({ data: product });
-});
+exports.getAllProducts = factory.getAll(ProductModel, "Product");
 
-exports.updateProduct = asyncHandler(async (req, res, next) => {
-  if (req.body.title) {
-    req.body.slug = slugify(req.body.title);
-  }
-  const product = await ProductModel.findOneAndUpdate(
-    { _id: req.params.id },
-    req.body,
-    { new: true }
-  );
-  if (!product) {
-    return next(
-      new ApiError(`Product not found with id of ${req.params.id}`, 404)
-    );
-  }
-  res.status(200).json({ data: product });
-});
+exports.getProductById = factory.getOne(ProductModel);
+
+exports.createProduct = factory.createOne(ProductModel);
+
+exports.updateProduct = factory.updateOne(ProductModel);
 
 exports.deleteProduct = factory.deleteOne(ProductModel);

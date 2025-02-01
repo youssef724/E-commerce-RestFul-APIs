@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-    const brandSchema = new mongoose.Schema(
+    const BrandSchema = new mongoose.Schema(
   {
     name: {
       type: String,
@@ -16,5 +16,21 @@ const mongoose = require('mongoose');
   },
   { timestamps: true }
 );
+const setImageUrl = (doc) => {
+  if (doc.image) {
+    const imageUrl = `${process.env.BASE_URL}/brands/${doc.image}`;
+    doc.image = imageUrl;
+  }
+};
+// return image URL + image name
 
-module.exports = mongoose.model('Brand', brandSchema);
+// Update , Get
+BrandSchema.post("init", function (doc) {
+  setImageUrl(doc);
+});
+// Create
+BrandSchema.post("save", function (doc) {
+  setImageUrl(doc);
+});
+
+module.exports = mongoose.model('Brand', BrandSchema);

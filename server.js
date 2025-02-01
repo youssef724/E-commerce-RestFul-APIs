@@ -1,6 +1,9 @@
+const path = require("path");
+
 const express = require("express");
 const dotenv = require("dotenv");
 const morgan = require("morgan");
+
 dotenv.config({ path: "config.env" });
 const connectDB = require("./Config/DB");
 const ApiError = require("./utils/APIError.js");
@@ -17,6 +20,9 @@ connectDB();
 
 //Middlewares
 app.use(express.json());
+app.use(express.static(path.join(__dirname, "uploads")));
+
+
 if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
   console.log(`Development mode: ${process.env.NODE_ENV}`);

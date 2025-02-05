@@ -12,6 +12,8 @@ const CategoryRoute = require("./Routes/CategoryRoute");
 const SubCategoryRoute = require("./Routes/SubCategoryRoute.js");
 const BrandRoute = require("./Routes/BrandRoute.js");
 const ProductRoute = require("./Routes/ProductRoute.js");
+const UserRoute = require("./Routes/UserRoute.js");
+
 //express app
 const app = express();
 
@@ -33,6 +35,8 @@ app.use("/api/v1/category", CategoryRoute);
 app.use("/api/v1/subcategory", SubCategoryRoute);
 app.use("/api/v1/brand", BrandRoute);
 app.use("/api/v1/product", ProductRoute);
+app.use("/api/v1/user", UserRoute);
+
 
 
 app.all("*", (req, res, next) => {

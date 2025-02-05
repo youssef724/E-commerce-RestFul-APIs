@@ -1,41 +1,49 @@
-const mongoose = require('mongoose');
-const validator = require('validator');
-const express = require('express');
-const { default: isEmail } = require('validator/lib/isEmail');
+const mongoose = require("mongoose");
+const bcrypt = require("bcryptjs");
 
-const UserSchema = new mongoose.Schema({
-    firstName: {
-        type: String,
-        required: [true, 'Please provide a first name'],
-        minlength: [3, 'First name must be at least 3 characters long'],
-        maxlength: [30, 'First name must be at most 30 characters long']
+const userSchema = new mongoose.Schema(
+  {
+    name: {
+      type: String,
+      required: true,
     },
-    lastName: {
-        type: String,
-        required: [true, 'Please provide a last name'],
-        minlength: [3, 'Last name must be at least 3 characters long'],
-        maxlength: [30, 'Last name must be at most 30 characters long']
+    slug: {
+      type: String,
+      lowercase: true,
     },
-    email:{
-        type: String,
-        required: [true, 'Please provide an email'],
-        unique: true,
-        validate: [validator.isEmail, 'Please provide a valid email']
+    email: {
+      type: String,
+      required: [true, "Email is required"],
+      unique: true,
+      lowercase: true,
     },
+
+    phone: String,
+    profileImage: String,
+
     password: {
-        type: String,
-        required: [true, 'Please provide a password'],
-        minlength: [6, 'Password must be at least 6 characters long'],
-        select: false
+      type: String,
+      required: [true, "Password is required"],
+      minlength: [6, "Password must be at least 6 characters long"],
     },
-    token:{
-        type: String
+    role: {
+      type: String,
+      enum: ["user", "admin"],
+      default: "user",
     },
-    role:{
-        type: String,
-        enum: ['user', 'admin'],
-        default: 'user'
-    }
+    active: {
+      type: Boolean,
+      default: true,
+    },
+  },
+  { timestamps: true }
+);
+userSchema.pre("save", async function (next) {
+  if(!this.isModified("password")) return next();
+  // hash password
+  const salt = await bcrypt.genSalt(12);
+  this.password = await bcrypt.hash(this.password, salt);
+  next();
 });
 
-module.exports = mongoose.model('User', UserSchema);
+module.exports = mongoose.model("User", userSchema);

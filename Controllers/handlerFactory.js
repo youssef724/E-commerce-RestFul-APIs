@@ -33,6 +33,7 @@ exports.createOne = (Model) =>
     res.status(201).json({ data: newDocument });
   });
 
+
 exports.getOne = (Model) =>
   asyncHandler(async (req, res, next) => {
     const document = await Model.findById(req.params.id);

@@ -20,10 +20,14 @@ const {
 const subCategoryRoute = require("./SubCategoryRoute");
 router.use("/:categoryId/subcategory", subCategoryRoute);
 
+const authService = require("./../Controllers/authController");
+
 router
   .route("/")
   .get(getAllCategory)
   .post(
+    authService.protect,
+    authService.allowedTo("admin", "manager"),
     uploadCategoryImage,
     resizeImage,
     createCategoryValidator,
@@ -34,11 +38,18 @@ router
   .route("/:id")
   .get(getCategoryValidator, getCategoryById)
   .put(
+    authService.protect,
+    authService.allowedTo("admin", "manager"),
     uploadCategoryImage,
     resizeImage,
     updateCategoryValidator,
     updateCategory
   )
-  .delete(deleteCategoryValidator, deleteCategory);
+  .delete(
+    authService.protect,
+    authService.allowedTo("admin"),
+    deleteCategoryValidator,
+    deleteCategory
+  );
 
 module.exports = router;

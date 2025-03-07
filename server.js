@@ -13,7 +13,7 @@ const SubCategoryRoute = require("./Routes/SubCategoryRoute.js");
 const BrandRoute = require("./Routes/BrandRoute.js");
 const ProductRoute = require("./Routes/ProductRoute.js");
 const UserRoute = require("./Routes/UserRoute.js");
-const authRoute = require("./Routes/authRoute.js");
+const authRoute = require("./Routes/AuthRoute.js");
 
 
 //express app

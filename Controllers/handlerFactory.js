@@ -11,6 +11,8 @@ exports.deleteOne = (Model) =>
         new ApiError(`Document not found with id of ${req.params.id}`, 404)
       );
     }
+    // Trigger the remove middleware
+    document.remove();
     res.status(200).json({ data: document });
   });
 
@@ -24,6 +26,8 @@ exports.updateOne = (Model) =>
         new ApiError(`Document not found with id of ${req.params.id}`, 404)
       );
     }
+    // Trigger the save middleware
+    document.save();
     res.status(200).json({ data: document });
   });
 
@@ -33,10 +37,15 @@ exports.createOne = (Model) =>
     res.status(201).json({ data: newDocument });
   });
 
-
-exports.getOne = (Model) =>
+exports.getOne = (Model, populateOptions) =>
   asyncHandler(async (req, res, next) => {
-    const document = await Model.findById(req.params.id);
+    // Build query
+    let query = Model.findById(req.params.id);
+    if (populateOptions) {
+      query = query.populate(populateOptions);
+    }
+    // Execute query
+    const document = await query;
     if (!document) {
       return next(
         new ApiError(`Document not found with id of ${req.params.id}`, 404)
@@ -45,10 +54,10 @@ exports.getOne = (Model) =>
     res.status(200).json({ data: document });
   });
 
-exports.getAll = (Model , ModelName = " ") =>
+exports.getAll = (Model, ModelName = " ") =>
   asyncHandler(async (req, res) => {
     let filter = {};
-    if(req.filterObj){
+    if (req.filterObj) {
       filter = req.filterObj;
     }
     const countDocuments = await Model.countDocuments();

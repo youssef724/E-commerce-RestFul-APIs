@@ -18,6 +18,9 @@ const {
 } = require("./../Utils/validators/productValidator");
 const authService = require("./../Controllers/authController");
 
+const ReviewRoute = require("./ReviewRoute");
+router.use("/:productId/reviews", ReviewRoute);
+
 router
   .route("/")
   .get(getAllProducts)

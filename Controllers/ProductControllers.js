@@ -69,7 +69,7 @@ exports.resizeProductImage = asyncHandler(async (req, res, next) => {
 
 exports.getAllProducts = factory.getAll(ProductModel, "Product");
 
-exports.getProductById = factory.getOne(ProductModel);
+exports.getProductById = factory.getOne(ProductModel, "reviews");
 
 exports.createProduct = factory.createOne(ProductModel);
 

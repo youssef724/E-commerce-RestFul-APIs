@@ -15,6 +15,8 @@ const ProductRoute = require("./Routes/ProductRoute.js");
 const UserRoute = require("./Routes/UserRoute.js");
 const authRoute = require("./Routes/AuthRoute.js");
 const ReviewRoute = require("./Routes/ReviewRoute.js");
+const wishListRoute = require("./Routes/WishListRoute.js");
+const addressRoute = require("./Routes/AddressesRoute.js"); 
 
 //express app
 const app = express();
@@ -25,7 +27,6 @@ connectDB();
 //Middlewares
 app.use(express.json());
 app.use(express.static(path.join(__dirname, "uploads")));
-
 
 if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
@@ -40,6 +41,8 @@ app.use("/api/v1/product", ProductRoute);
 app.use("/api/v1/user", UserRoute);
 app.use("/api/v1/auth", authRoute);
 app.use("/api/v1/reviews", ReviewRoute);
+app.use("/api/v1/wishlist", wishListRoute);
+app.use("/api/v1/addresses", addressRoute);
 
 app.all("*", (req, res, next) => {
   next(new ApiError(`Cant find this route with ${req.originalUrl}`, 400));

@@ -12,7 +12,9 @@ exports.deleteOne = (Model) =>
       );
     }
     // Trigger the remove middleware
-    document.remove();
+    if (Model === "Review") {
+      document.remove();
+    }
     res.status(200).json({ data: document });
   });
 

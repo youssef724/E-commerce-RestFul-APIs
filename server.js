@@ -9,9 +9,13 @@ const connectDB = require("./Config/DB");
 const ApiError = require("./utils/APIError.js");
 const globalErrorHandler = require("./middlewares/errorMiddleware");
 const mountRoutes = require("./Routes/Index.js");
+const setupSwagger = require("./swagger.js");
 
 //express app
 const app = express();
+
+// Mount Routes
+mountRoutes(app);
 
 //Connect to MongoDB
 connectDB();
@@ -25,8 +29,8 @@ if (process.env.NODE_ENV === "development") {
   console.log(`Development mode: ${process.env.NODE_ENV}`);
 }
 
-// Mount Routes
-mountRoutes(app);
+//setup swagger
+setupSwagger(app);
 
 app.all("*", (req, res, next) => {
   next(new ApiError(`Cant find this route with ${req.originalUrl}`, 400));
@@ -38,6 +42,7 @@ app.use(globalErrorHandler);
 const PORT = process.env.PORT || 8000;
 const server = app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
+  console.log(`Swagger docs available at http://localhost:${PORT}/api-docs`);
 });
 
 //unhandled promise rejection

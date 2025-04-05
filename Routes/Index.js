@@ -11,17 +11,17 @@ const couponRoute = require("./CouponRoutes.js");
 const CartRoute = require("./CartRoute.js");
 
 const mountRoutes = (app) => {
-  app.use("/api/v1/category", CategoryRoute);
-  app.use("/api/v1/subcategory", SubCategoryRoute);
-  app.use("/api/v1/brand", BrandRoute);
-  app.use("/api/v1/product", ProductRoute);
-  app.use("/api/v1/user", UserRoute);
-  app.use("/api/v1/auth", authRoute);
-  app.use("/api/v1/reviews", ReviewRoute);
-  app.use("/api/v1/wishlist", wishListRoute);
-  app.use("/api/v1/addresses", addressRoute);
-  app.use("/api/v1/coupons", couponRoute);
-  app.use("/api/v1/cart", CartRoute);
+  app.use("/categories", CategoryRoute);
+  app.use("/subcategories", SubCategoryRoute);
+  app.use("/brands", BrandRoute);
+  app.use("/products", ProductRoute);
+  app.use("/users", UserRoute);
+  app.use("/auth", authRoute);
+  app.use("/reviews", ReviewRoute);
+  app.use("/wishlist", wishListRoute);
+  app.use("/addresses", addressRoute);
+  app.use("/coupons", couponRoute);
+  app.use("/carts", CartRoute);
 };
 
 module.exports = mountRoutes;

@@ -29,6 +29,7 @@ exports.Signup = asyncHandler(async (req, res, next) => {
 exports.Login = asyncHandler(async (req, res, next) => {
   //check if password and email exist
   //check if user exists and check if password is correct
+  console.log(req.body)
   const user = await User.findOne({ email: req.body.email });
   if (!user || !(await bcrypt.compare(req.body.password, user.password))) {
     return next(new ApiError("Incorrect email or password", 401));

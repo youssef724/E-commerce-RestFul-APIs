@@ -4,7 +4,7 @@ const sharp = require("sharp");
 
 const factory = require("./handlerFactory");
 const multer = require("multer");
-const ApiError = require("../utils/APIError");
+const ApiError = require("../Utils/ApiError");
 
 const {uploadMultipleImages} = require("../middlewares/uploadImageMiddleware");
 

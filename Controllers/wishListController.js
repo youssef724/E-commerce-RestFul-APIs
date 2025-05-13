@@ -1,7 +1,6 @@
 const asyncHandler = require("express-async-handler");
 const UserModel = require("../Models/UsersModel");
 const factory = require("./handlerFactory");
-const ApiError = require("../utils/APIError");
 
 exports.addToWishList = asyncHandler(async (req, res, next) => {
   // addToset add product to wishlist if it is not already added

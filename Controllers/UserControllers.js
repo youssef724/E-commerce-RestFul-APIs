@@ -2,7 +2,7 @@ const asyncHandler = require("express-async-handler");
 const sharp = require("sharp");
 const UserModel = require("../Models/UsersModel");
 const factory = require("./handlerFactory");
-const ApiError = require("../utils/APIError");
+const ApiError = require("../Utils/ApiError");
 const bcrypt = require("bcryptjs");
 const { uploadSingleImage } = require("../middlewares/uploadImageMiddleware");
 

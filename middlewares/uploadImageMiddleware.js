@@ -1,5 +1,5 @@
 const multer = require("multer");
-const ApiError = require("../utils/APIError");
+const ApiError = require("../Utils/ApiError");
 
 const multerOptions = () => {
   // const multerStorage = multer.diskStorage({

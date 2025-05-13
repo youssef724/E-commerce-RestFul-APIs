@@ -6,7 +6,7 @@ const morgan = require("morgan");
 
 dotenv.config({ path: "config.env" });
 const connectDB = require("./Config/DB");
-const ApiError = require("./utils/APIError.js");
+const ApiError = require("./Utils/ApiError");
 const globalErrorHandler = require("./middlewares/errorMiddleware");
 const mountRoutes = require("./Routes/Index.js");
 const setupSwagger = require("./swagger.js");

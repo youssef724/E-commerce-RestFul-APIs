@@ -1,5 +1,5 @@
 const e = require("express");
-const ApiError = require("../utils/APIError");
+const ApiError = require("../Utils/ApiError");
 const ApiFeatures = require("../Utils/apiFeatures");
 const asyncHandler = require("express-async-handler");
 

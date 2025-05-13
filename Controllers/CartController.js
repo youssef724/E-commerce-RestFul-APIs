@@ -2,7 +2,7 @@ const ApiFeatures = require("../Utils/apiFeatures");
 const asyncHandler = require("express-async-handler");
 const Cart = require("../Models/CartModel");
 const Product = require("../Models/ProductModel");
-const ApiError = require("../utils/APIError");
+const ApiError = require("../Utils/ApiError");
 const Coupon = require("../Models/CouponModel");
 
 const calculateTotalCartPrice = (cart) => {

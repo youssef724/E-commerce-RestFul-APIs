@@ -3,7 +3,6 @@ const sharp = require("sharp");
 
 const BrandModel = require("../Models/BrandModel");
 const factory = require("./handlerFactory");
-const ApiError = require("../utils/APIError");
 
 const { uploadSingleImage } = require("../middlewares/uploadImageMiddleware");
 
